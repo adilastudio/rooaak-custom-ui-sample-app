@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: rooaak-custom-ui-sample-app
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: PORT
+        value: 8786
+      - key: ROOAAK_API_KEY
+        sync: false
+      - key: ROOAAK_AGENT_ID
+        sync: false

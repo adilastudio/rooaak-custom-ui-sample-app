@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rooaak Custom UI Sample</title>
+    <style>
+      body {
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 16px;
+      }
+      .chat {
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        padding: 16px;
+        min-height: 280px;
+        margin-bottom: 12px;
+        background: #fafafa;
+      }
+      .row {
+        margin: 8px 0;
+      }
+      .user { color: #0a58ca; }
+      .agent { color: #198754; }
+      form { display: flex; gap: 8px; }
+      input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #bbb;
+        border-radius: 8px;
+      }
+      button {
+        padding: 10px 14px;
+        border: 0;
+        border-radius: 8px;
+        background: #111;
+        color: #fff;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Rooaak Custom UI Sample</h1>
+    <p>Demonstrates sending chat messages from your own app UI into Rooaak.</p>
+    <div id="chat" class="chat"></div>
+    <form id="form">
+      <input id="message" placeholder="Type a message" required />
+      <button type="submit">Send</button>
+    </form>
+
+    <script>
+      const sessionId = "custom-ui-demo-session";
+      const chat = document.getElementById("chat");
+      const form = document.getElementById("form");
+      const messageInput = document.getElementById("message");
+
+      function addLine(role, text) {
+        const row = document.createElement("div");
+        row.className = `row ${role}`;
+        row.textContent = `${role === "user" ? "You" : "Agent"}: ${text}`;
+        chat.appendChild(row);
+        chat.scrollTop = chat.scrollHeight;
+      }
+
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const message = messageInput.value.trim();
+        if (!message) return;
+
+        messageInput.value = "";
+        addLine("user", message);
+
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            sessionId,
+            message,
+            correlationId: `ui-${Date.now()}`,
+            idempotencyKey: `ui-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+          }),
+        });
+
+        const body = await response.json().catch(() => ({ error: "invalid response" }));
+        if (!response.ok) {
+          addLine("agent", `Error: ${body.error || "request failed"}`);
+          return;
+        }
+
+        addLine("agent", body.response || "(no response)");
+      });
+    </script>
+  </body>
+</html>
