@@ -2,27 +2,32 @@
 
 ## Pre-release validation
 
-- [ ] `npm install`
-- [ ] `npm test` passes
-- [ ] `node --check src/server.mjs` passes
-- [ ] `.env.example` matches runtime-required env vars
-- [ ] README setup steps are accurate end-to-end
+- [x] `npm install`
+- [x] `npm test` passes
+- [x] `node --check src/server.mjs` passes
+- [x] `.env.example` matches runtime-required env vars
+- [x] README setup steps are accurate end-to-end
 
 ## Security checks
 
-- [ ] API key is server-side only (never exposed in browser)
-- [ ] Idempotency keys are used for message writes
-- [ ] Channel metadata set to `custom_ui`
-- [ ] No secrets/tokens logged
+- [x] API key is server-side only (never exposed in browser)
+- [x] Idempotency keys are used for message writes
+- [x] Channel metadata set to `custom_ui`
+- [x] No secrets/tokens logged
 
 ## Deployment checks
 
-- [ ] Health endpoint responds (`/healthz`)
-- [ ] UI route (`/`) loads correctly
+- [x] Health endpoint responds (`/healthz`)
+- [x] UI route (`/`) loads correctly
 - [ ] Chat API route (`/api/chat`) returns Rooaak responses
 
 ## Release ops
 
-- [ ] Tag release (for example `v0.1.0`)
-- [ ] Publish changelog entry
+- [x] Tag release (`v0.1.0`)
+- [x] Publish changelog entry
 - [ ] Smoke test chat flow against a real Rooaak agent
+
+## Verification notes (2026-02-12)
+
+- Local checks passed: install, tests, syntax, `/healthz`, and `/` route.
+- Remaining unchecked items require a live Rooaak API key + agent for end-to-end chat validation.
