@@ -23,3 +23,8 @@ Open: `http://localhost:8786`
 
 - This sample uses server-side polling for simplicity.
 - In production, consider switching to webhook-driven completion.
+
+## License and support
+
+- License: MIT (`LICENSE`)
+- Support policy: `SUPPORT.md`
