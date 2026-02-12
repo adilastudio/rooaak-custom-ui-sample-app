@@ -32,7 +32,7 @@ app.post("/api/chat", async (req, res) => {
   }
 
   try {
-    const result = await client.messages.sendAndWait(
+    const sent = await client.messages.send(
       {
         agentId: env.ROOAAK_AGENT_ID,
         sessionId,
@@ -44,24 +44,29 @@ app.post("/api/chat", async (req, res) => {
           correlationId,
         },
       },
-      {
-        completion: "poll",
-        timeoutMs: 60_000,
-        pollIntervalMs: 1_000,
-      },
       idempotencyKey,
     );
 
-    const responseText =
-      result.initial.response ||
-      result.message?.response ||
-      "No response available yet.";
+    if (sent.status === "responded") {
+      res.status(200).json({
+        messageId: sent.messageId,
+        status: sent.status,
+        completion: "responded",
+        response: sent.response || "No response available yet.",
+      });
+      return;
+    }
+
+    const final = await client.messages.waitForResponse(sent.messageId, {
+      timeoutMs: 60_000,
+      pollIntervalMs: 1_000,
+    });
 
     res.status(200).json({
-      messageId: result.initial.messageId,
-      status: result.initial.status,
-      completion: result.completion,
-      response: responseText,
+      messageId: sent.messageId,
+      status: final.status,
+      completion: final.status === "failed" ? "failed" : "responded",
+      response: final.response || "No response available yet.",
     });
   } catch (error) {
     console.error("[custom-ui-sample] chat failed", {

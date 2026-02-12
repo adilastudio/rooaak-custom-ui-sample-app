@@ -19,15 +19,15 @@
 
 - [x] Health endpoint responds (`/healthz`)
 - [x] UI route (`/`) loads correctly
-- [ ] Chat API route (`/api/chat`) returns Rooaak responses
+- [x] Chat API route (`/api/chat`) returns Rooaak responses
 
 ## Release ops
 
 - [x] Tag release (`v0.1.0`)
 - [x] Publish changelog entry
-- [ ] Smoke test chat flow against a real Rooaak agent
+- [x] Smoke test chat flow against a real Rooaak agent
 
 ## Verification notes (2026-02-12)
 
 - Local checks passed: install, tests, syntax, `/healthz`, and `/` route.
-- Remaining unchecked items require a live Rooaak API key + agent for end-to-end chat validation.
+- Live deployed smoke test passed via `POST /api/chat` with response `custom-ui-smoke-ok` (message id: `57937fb1-59b9-42c7-925e-7d4616e15454`).

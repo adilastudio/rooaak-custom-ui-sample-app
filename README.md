@@ -6,7 +6,7 @@ A minimal web app showing how to embed Rooaak messaging into your own product UI
 
 - Browser chat UI (`public/index.html`)
 - Backend API route (`POST /api/chat`) that sends messages to Rooaak
-- Uses SDK `messages.sendAndWait(..., { completion: "poll" })`
+- Uses SDK `messages.send(...)` + `messages.waitForResponse(...)`
 - Passes channel metadata as `custom_ui`
 
 ## Setup
